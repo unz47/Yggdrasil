@@ -7,15 +7,15 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
-@Mod(ExampleMod.MODID)
-public class ExampleMod {
-    public static final String MODID = "examplemod";
+@Mod(Yggdrasil.MODID)
+public class Yggdrasil {
+    public static final String MODID = "yggdrasil";
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public ExampleMod() {
+    public Yggdrasil() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         MinecraftForge.EVENT_BUS.register(this);
         
-        LOGGER.info("Hello from Example Mod!");
+        LOGGER.info("Hello from Yggdrasil!");
     }
 }
