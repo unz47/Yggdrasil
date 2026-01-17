@@ -1,6 +1,7 @@
 package com.example.examplemod.item;
 
 import com.example.examplemod.Yggdrasil;
+import com.example.examplemod.block.ModBlocks;
 import com.example.examplemod.item.metal.MetalItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -27,10 +28,10 @@ public class ModCreativeTabs {
 
     public static final RegistryObject<CreativeModeTab> BLOCKS_TAB = CREATIVE_MODE_TABS.register("blocks_tab",
         () -> CreativeModeTab.builder()
-            .icon(() -> new ItemStack(Items.STONE))
+            .icon(() -> new ItemStack(ModBlocks.MITHRIL_ORE.get()))
             .title(Component.translatable("creativetab.yggdrasil.blocks"))
             .displayItems((parameters, output) -> {
-                output.accept(Items.STONE);
+                output.accept(ModBlocks.MITHRIL_ORE.get());
             })
             .build());
 

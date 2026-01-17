@@ -1,5 +1,6 @@
 package com.example.examplemod;
 
+import com.example.examplemod.block.ModBlocks;
 import com.example.examplemod.item.ModCreativeTabs;
 import com.example.examplemod.item.ModItems;
 import com.mojang.logging.LogUtils;
@@ -17,6 +18,7 @@ public class Yggdrasil {
     public Yggdrasil() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         
+        ModBlocks.register(modEventBus);
         ModItems.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
         
