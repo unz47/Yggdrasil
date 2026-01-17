@@ -1,1 +1,1 @@
-# minecraft-mod-Labyrinth
+# minecraft-mod-Yggdrasil

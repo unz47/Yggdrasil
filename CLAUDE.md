@@ -1,18 +1,18 @@
-# Labyrinth Mod - プロジェクト概要
+# Yggdrasil Mod - プロジェクト概要
 
 ## 🎮 基本情報
-- **Mod名**: Labyrinth
-- **Mod ID**: labyrinth
+- **Mod名**: Yggdrasil
+- **Mod ID**: yggdrasil
 - **Minecraft Version**: 1.20.6
 - **Forge Version**: 50.2.1
 - **開発者**: unz47
-- **パッケージ**: com.unz47.labyrinth
+- **パッケージ**: com.example.yggdrasil
 
 ## 📁 プロジェクト構造
 
 ### Javaパッケージ構造
 ```
-com.unz47.labyrinth/
+com.example.yggdrasil/
 ├── blocks/          # ブロッククラス
 │   └── OrichalcumOreBlock.java
 ├── items/           # アイテムクラス
