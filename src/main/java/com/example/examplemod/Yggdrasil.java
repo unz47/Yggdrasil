@@ -1,5 +1,7 @@
 package com.example.examplemod;
 
+import com.example.examplemod.item.ModCreativeTabs;
+import com.example.examplemod.item.ModItems;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -14,6 +16,10 @@ public class Yggdrasil {
 
     public Yggdrasil() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        
+        ModItems.register(modEventBus);
+        ModCreativeTabs.register(modEventBus);
+        
         MinecraftForge.EVENT_BUS.register(this);
         
         LOGGER.info("Hello from Yggdrasil!");
