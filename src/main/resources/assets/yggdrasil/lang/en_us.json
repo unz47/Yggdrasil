@@ -1,7 +1,10 @@
 {
   "item.yggdrasil.mithril_nugget": "Mithril Nugget",
   "item.yggdrasil.mithril_ingot": "Mithril Ingot",
+  "item.yggdrasil.adamantite_nugget": "Adamantite Nugget",
+  "item.yggdrasil.adamantite_ingot": "Adamantite Ingot",
   "block.yggdrasil.mithril_ore": "Mithril Ore",
+  "block.yggdrasil.adamantite_ore": "Adamantite Ore",
   "creativetab.yggdrasil.misc": "Yggdrasil_Misc",
   "creativetab.yggdrasil.blocks": "Yggdrasil_Blocks",
   "creativetab.yggdrasil.tools": "Yggdrasil_Tools",

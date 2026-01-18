@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "yggdrasil:adamantite_ingot"
+    }
+  ],
+  "result": {
+    "id": "yggdrasil:adamantite_nugget",
+    "count": 9
+  }
+}

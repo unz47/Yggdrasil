@@ -23,6 +23,13 @@ public class ModBlocks {
             .requiresCorrectToolForDrops()
             .sound(SoundType.STONE)));
 
+    public static final RegistryObject<Block> ADAMANTITE_ORE = BLOCKS.register("adamantite_ore",
+        () -> new DropExperienceBlock(UniformInt.of(0, 3), BlockBehaviour.Properties.of()
+            .strength(7.0f, 4.0f)
+            .requiresCorrectToolForDrops()
+            .sound(SoundType.STONE)
+            .lightLevel(state -> 9)));
+
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
     }
@@ -31,6 +38,7 @@ public class ModBlocks {
         DeferredRegister<Item> items = DeferredRegister.create(ForgeRegistries.ITEMS, Yggdrasil.MODID);
         
         items.register("mithril_ore", () -> new BlockItem(MITHRIL_ORE.get(), new Item.Properties()));
+        items.register("adamantite_ore", () -> new BlockItem(ADAMANTITE_ORE.get(), new Item.Properties()));
         
         items.register(eventBus);
     }

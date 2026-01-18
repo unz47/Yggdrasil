@@ -1,7 +1,10 @@
 {
   "item.yggdrasil.mithril_nugget": "ミスリルナゲット",
   "item.yggdrasil.mithril_ingot": "ミスリルインゴット",
+  "item.yggdrasil.adamantite_nugget": "アダマンタイトナゲット",
+  "item.yggdrasil.adamantite_ingot": "アダマンタイトインゴット",
   "block.yggdrasil.mithril_ore": "ミスリル鉱石",
+  "block.yggdrasil.adamantite_ore": "アダマンタイト鉱石",
   "creativetab.yggdrasil.misc": "ユグドラシル_雑貨",
   "creativetab.yggdrasil.blocks": "ユグドラシル_ブロック",
   "creativetab.yggdrasil.tools": "ユグドラシル_ツール",

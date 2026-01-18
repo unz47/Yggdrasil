@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "yggdrasil:mithril_ore"
+    "yggdrasil:mithril_ore",
+    "yggdrasil:adamantite_ore"
   ]
 }

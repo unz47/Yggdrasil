@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {"item": "yggdrasil:adamantite_nugget"},
+    {"item": "yggdrasil:adamantite_nugget"},
+    {"item": "yggdrasil:adamantite_nugget"},
+    {"item": "yggdrasil:adamantite_nugget"},
+    {"item": "yggdrasil:adamantite_nugget"},
+    {"item": "yggdrasil:adamantite_nugget"},
+    {"item": "yggdrasil:adamantite_nugget"},
+    {"item": "yggdrasil:adamantite_nugget"},
+    {"item": "yggdrasil:adamantite_nugget"}
+  ],
+  "result": {
+    "id": "yggdrasil:adamantite_ingot"
+  }
+}

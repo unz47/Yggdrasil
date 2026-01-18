@@ -23,6 +23,8 @@ public class ModCreativeTabs {
             .displayItems((parameters, output) -> {
                 output.accept(MetalItems.MITHRIL_NUGGET.get());
                 output.accept(MetalItems.MITHRIL_INGOT.get());
+                output.accept(MetalItems.ADAMANTITE_NUGGET.get());
+                output.accept(MetalItems.ADAMANTITE_INGOT.get());
             })
             .build());
 
@@ -32,6 +34,7 @@ public class ModCreativeTabs {
             .title(Component.translatable("creativetab.yggdrasil.blocks"))
             .displayItems((parameters, output) -> {
                 output.accept(ModBlocks.MITHRIL_ORE.get());
+                output.accept(ModBlocks.ADAMANTITE_ORE.get());
             })
             .build());
 
