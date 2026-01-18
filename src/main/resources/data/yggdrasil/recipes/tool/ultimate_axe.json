@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " MA",
+    " IM",
+    " I "
+  ],
+  "key": {
+    "M": {
+      "item": "yggdrasil:mithril_ingot"
+    },
+    "A": {
+      "item": "yggdrasil:adamantite_ingot"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "id": "yggdrasil:ultimate_axe"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "yggdrasil:item/ultimate_bow",
+  "textures": {
+    "layer0": "yggdrasil:item/tool/ultimate_bow_pulling_0"
+  }
+}

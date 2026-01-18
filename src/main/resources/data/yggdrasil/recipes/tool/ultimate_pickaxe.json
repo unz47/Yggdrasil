@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "AMA",
+    " I ",
+    " I "
+  ],
+  "key": {
+    "A": {
+      "item": "yggdrasil:adamantite_ingot"
+    },
+    "M": {
+      "item": "yggdrasil:mithril_ingot"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "id": "yggdrasil:ultimate_pickaxe"
+  }
+}

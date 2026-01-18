@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " AS",
+    "M S",
+    " AS"
+  ],
+  "key": {
+    "A": {
+      "item": "yggdrasil:adamantite_ingot"
+    },
+    "M": {
+      "item": "yggdrasil:mithril_ingot"
+    },
+    "S": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "id": "yggdrasil:ultimate_bow"
+  }
+}
