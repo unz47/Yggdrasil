@@ -3,6 +3,7 @@ package com.example.examplemod.item;
 import com.example.examplemod.Yggdrasil;
 import com.example.examplemod.block.ModBlocks;
 import com.example.examplemod.item.metal.MetalItems;
+import com.example.examplemod.item.tool.ToolItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -40,19 +41,23 @@ public class ModCreativeTabs {
 
     public static final RegistryObject<CreativeModeTab> TOOLS_TAB = CREATIVE_MODE_TABS.register("tools_tab",
         () -> CreativeModeTab.builder()
-            .icon(() -> new ItemStack(Items.IRON_PICKAXE))
+            .icon(() -> new ItemStack(ToolItems.ULTIMATE_PICKAXE.get()))
             .title(Component.translatable("creativetab.yggdrasil.tools"))
             .displayItems((parameters, output) -> {
-                output.accept(Items.IRON_PICKAXE);
+                output.accept(ToolItems.ULTIMATE_PICKAXE.get());
+                output.accept(ToolItems.ULTIMATE_SHOVEL.get());
+                output.accept(ToolItems.ULTIMATE_HOE.get());
             })
             .build());
 
     public static final RegistryObject<CreativeModeTab> COMBAT_TAB = CREATIVE_MODE_TABS.register("combat_tab",
         () -> CreativeModeTab.builder()
-            .icon(() -> new ItemStack(Items.IRON_SWORD))
+            .icon(() -> new ItemStack(ToolItems.ULTIMATE_AXE.get()))
             .title(Component.translatable("creativetab.yggdrasil.combat"))
             .displayItems((parameters, output) -> {
-                output.accept(Items.IRON_SWORD);
+                output.accept(ToolItems.ULTIMATE_SWORD.get());
+                output.accept(ToolItems.ULTIMATE_AXE.get());
+                output.accept(ToolItems.ULTIMATE_BOW.get());
             })
             .build());
 
