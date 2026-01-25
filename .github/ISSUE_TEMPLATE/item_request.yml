@@ -1,0 +1,83 @@
+name: アイテム追加リクエスト
+description: 新しいアイテムの追加を提案
+title: "[アイテム] "
+labels: ["enhancement", "item"]
+body:
+  - type: dropdown
+    id: item_type
+    attributes:
+      label: アイテムタイプ
+      options:
+        - 通常アイテム
+        - ツール（剣/斧/ピッケル/シャベル/クワ）
+        - 食料
+        - 防具
+        - ブロック
+    validations:
+      required: true
+
+  - type: input
+    id: item_id
+    attributes:
+      label: アイテムID
+      placeholder: "例: mythril_sword"
+    validations:
+      required: true
+
+  - type: input
+    id: item_name_ja
+    attributes:
+      label: アイテム名（日本語）
+      placeholder: "例: ミスリルの剣"
+    validations:
+      required: true
+
+  - type: input
+    id: item_name_en
+    attributes:
+      label: アイテム名（英語）
+      placeholder: "例: Mythril Sword"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: rarity
+    attributes:
+      label: 希少度
+      options:
+        - Common
+        - Uncommon
+        - Rare
+        - Epic
+    validations:
+      required: true
+
+  - type: textarea
+    id: stats
+    attributes:
+      label: ステータス/特性
+      description: ツールの場合は攻撃力・耐久値、食料の場合は満腹度など
+      placeholder: |
+        攻撃力: 8.0
+        耐久値: 1500
+        採掘レベル: 3
+
+  - type: textarea
+    id: recipe
+    attributes:
+      label: クラフトレシピ
+      placeholder: |
+        行1: [air, mythril_ingot, air]
+        行2: [air, mythril_ingot, air]
+        行3: [air, stick, air]
+
+  - type: textarea
+    id: special
+    attributes:
+      label: 特殊能力（任意）
+      placeholder: "例: 攻撃時に雷を落とす"
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 説明・備考
