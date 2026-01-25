@@ -1,0 +1,12 @@
+{
+  "entity.yggdrasil.giant_bee.ambient": {
+    "sounds": [
+      {
+        "name": "yggdrasil:entity/giant_bee/ambient",
+        "volume": 0.7,
+        "attenuation_distance": 14
+      }
+    ],
+    "subtitle": "entity.yggdrasil.giant_bee.ambient"
+  }
+}
