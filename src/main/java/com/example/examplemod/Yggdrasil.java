@@ -1,6 +1,9 @@
 package com.example.examplemod;
 
 import com.example.examplemod.block.ModBlocks;
+import com.example.examplemod.entity.ModEntities;
+import com.example.examplemod.entity.ModSounds;
+import com.example.examplemod.entity.ModSpawnEggs;
 import com.example.examplemod.item.ModCreativeTabs;
 import com.example.examplemod.item.ModItems;
 import com.mojang.logging.LogUtils;
@@ -21,6 +24,9 @@ public class Yggdrasil {
         ModBlocks.register(modEventBus);
         ModItems.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
+        ModEntities.register(modEventBus);
+        ModSpawnEggs.register(modEventBus);
+        ModSounds.register(modEventBus);
         
         MinecraftForge.EVENT_BUS.register(this);
         

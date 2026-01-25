@@ -9,11 +9,14 @@
   "item.yggdrasil.ultimate_shovel": "Ultimate Shovel",
   "item.yggdrasil.ultimate_hoe": "Ultimate Hoe",
   "item.yggdrasil.ultimate_bow": "Ultimate Bow",
+  "item.yggdrasil.giant_bee_spawn_egg": "Giant Bee Spawn Egg",
   "block.yggdrasil.mithril_ore": "Mithril Ore",
   "block.yggdrasil.adamantite_ore": "Adamantite Ore",
+  "entity.yggdrasil.giant_bee": "Giant Bee",
   "creativetab.yggdrasil.misc": "Yggdrasil_Misc",
   "creativetab.yggdrasil.blocks": "Yggdrasil_Blocks",
   "creativetab.yggdrasil.tools": "Yggdrasil_Tools",
   "creativetab.yggdrasil.combat": "Yggdrasil_Combat",
-  "creativetab.yggdrasil.food": "Yggdrasil_Food"
+  "creativetab.yggdrasil.food": "Yggdrasil_Food",
+  "creativetab.yggdrasil.enemy": "Yggdrasil_Enemy"
 }

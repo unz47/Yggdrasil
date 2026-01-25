@@ -9,11 +9,14 @@
   "item.yggdrasil.ultimate_shovel": "アルティメットシャベル",
   "item.yggdrasil.ultimate_hoe": "アルティメットクワ",
   "item.yggdrasil.ultimate_bow": "アルティメット弓",
+  "item.yggdrasil.giant_bee_spawn_egg": "巨大蜂のスポーンエッグ",
   "block.yggdrasil.mithril_ore": "ミスリル鉱石",
   "block.yggdrasil.adamantite_ore": "アダマンタイト鉱石",
+  "entity.yggdrasil.giant_bee": "巨大蜂",
   "creativetab.yggdrasil.misc": "ユグドラシル_雑貨",
   "creativetab.yggdrasil.blocks": "ユグドラシル_ブロック",
   "creativetab.yggdrasil.tools": "ユグドラシル_ツール",
   "creativetab.yggdrasil.combat": "ユグドラシル_戦闘",
-  "creativetab.yggdrasil.food": "ユグドラシル_食料"
+  "creativetab.yggdrasil.food": "ユグドラシル_食料",
+  "creativetab.yggdrasil.enemy": "ユグドラシル_敵"
 }
