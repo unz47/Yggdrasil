@@ -26,7 +26,7 @@ jobs:
           BRANCH="newItem/${{ github.event.issue.number }}/${{ steps.extract.outputs.item_id }}"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b "$BRANCH"
+          git fetch origin "$BRANCH" && git checkout "$BRANCH" || git checkout -b "$BRANCH"
           mkdir -p .kiro/issue
           cat << 'EOF' > ".kiro/issue/${{ github.event.issue.number }}.md"
           # ${{ github.event.issue.title }}
@@ -34,6 +34,6 @@ jobs:
           ${{ github.event.issue.body }}
           EOF
           git add .kiro/issue/
-          git commit -m "Add issue #${{ github.event.issue.number }}"
+          git commit -m "Add issue #${{ github.event.issue.number }}" || true
           git push origin "$BRANCH"
-          gh pr create --title "${{ github.event.issue.title }}" --body "Closes #${{ github.event.issue.number }}" --head "$BRANCH"
+          gh pr list --head "$BRANCH" --json number --jq '.[0].number' | grep -q . || gh pr create --title "${{ github.event.issue.title }}" --body "Closes #${{ github.event.issue.number }}" --head "$BRANCH"
