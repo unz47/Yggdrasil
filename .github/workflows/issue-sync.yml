@@ -8,20 +8,32 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
-      - name: Save issue
+      
+      - name: Extract item ID
+        id: extract
         run: |
+          ITEM_ID=$(echo "${{ github.event.issue.body }}" | grep -oP '(?<=アイテムID\s).*' | head -1 | tr -d '\r\n ')
+          [ -z "$ITEM_ID" ] && ITEM_ID="item"
+          echo "item_id=$ITEM_ID" >> $GITHUB_OUTPUT
+      
+      - name: Create branch and PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="newItem/${{ github.event.issue.number }}/${{ steps.extract.outputs.item_id }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
           mkdir -p .kiro/issue
           cat << 'EOF' > ".kiro/issue/${{ github.event.issue.number }}.md"
           # ${{ github.event.issue.title }}
 
           ${{ github.event.issue.body }}
           EOF
-      - name: Commit
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .kiro/issue/
-          git commit -m "Add issue #${{ github.event.issue.number }}" || exit 0
-          git push
+          git commit -m "Add issue #${{ github.event.issue.number }}"
+          git push origin "$BRANCH"
+          gh pr create --title "${{ github.event.issue.title }}" --body "Closes #${{ github.event.issue.number }}" --head "$BRANCH"
