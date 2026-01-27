@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "MMM",
+    "MMM",
+    "MMM"
+  ],
+  "key": {
+    "M": {
+      "item": "yggdrasil:mithril_ingot"
+    }
+  },
+  "result": {
+    "id": "yggdrasil:mithril_block"
+  }
+}
