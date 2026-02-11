@@ -22,7 +22,7 @@ jobs:
       - name: Extract item ID
         id: extract
         run: |
-          ITEM_ID=$(echo "${{ github.event.issue.body }}" | grep -oP '(?<=アイテムID\s).*' | head -1 | tr -d '\r\n ')
+          ITEM_ID=$(echo "${{ github.event.issue.body }}" | grep -A2 'アイテムID' | grep -v 'アイテムID' | grep -v '^$' | head -1 | tr -d '\r\n ')
           [ -z "$ITEM_ID" ] && ITEM_ID="item"
           echo "item_id=$ITEM_ID" >> $GITHUB_OUTPUT
 
@@ -87,7 +87,10 @@ jobs:
             --content-type application/json \
             --accept application/json \
             --body "$PAYLOAD" \
-            /dev/stdout 2>/dev/null)
+            /dev/stdout) || true
+
+          echo "Bedrock response status: $?"
+          echo "Response length: ${#RESPONSE}"
 
           # レスポンスから要件テキストを抽出
           REQUIREMENTS=$(echo "$RESPONSE" | jq -r '.content[0].text')
