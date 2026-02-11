@@ -1,4 +1,4 @@
-name: Sync Issue
+name: Sync Issue & Generate Requirements
 on:
   issues:
     types: [opened]
@@ -11,29 +11,122 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
-      
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION || 'us-east-1' }}
+
       - name: Extract item ID
         id: extract
         run: |
           ITEM_ID=$(echo "${{ github.event.issue.body }}" | grep -oP '(?<=アイテムID\s).*' | head -1 | tr -d '\r\n ')
           [ -z "$ITEM_ID" ] && ITEM_ID="item"
           echo "item_id=$ITEM_ID" >> $GITHUB_OUTPUT
-      
+
+      - name: Generate requirements with Bedrock
+        id: bedrock
+        env:
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_LABELS: ${{ join(github.event.issue.labels.*.name, ', ') }}
+          ITEM_ID: ${{ steps.extract.outputs.item_id }}
+        run: |
+          # 既存の要件ファイルをサンプル（完成形）として1つ読み込む
+          EXAMPLE=""
+          for f in .kiro/definition/*_requirements.md; do
+            [ -f "$f" ] && EXAMPLE=$(cat "$f") && break
+          done
+
+          # テンプレート（構造定義）を全て読み込む
+          TEMPLATES=""
+          for f in .kiro/templates/*.md; do
+            [ -f "$f" ] && TEMPLATES="${TEMPLATES}
+          --- $(basename "$f") ---
+          $(cat "$f")
+          "
+          done
+
+          # Bedrockへのプロンプト構築
+          PROMPT="あなたはMinecraft Forge 1.20.6 モッド「Yggdrasil」の要件定義を作成するアシスタントです。
+
+          以下のIssue情報から、要件定義マークダウンを生成してください。
+
+          ## テンプレート（構造定義）:
+          Issueの内容に最も適したテンプレートを選び、その構造に従ってください。
+          ${TEMPLATES}
+
+          ## 既存の要件ファイル例（完成形の参考）:
+          ${EXAMPLE}
+
+          ## Issue情報:
+          タイトル: ${ISSUE_TITLE}
+          ラベル: ${ISSUE_LABELS}
+          本文:
+          ${ISSUE_BODY}
+
+          ## 指示:
+          - Issueの内容に最も適したテンプレートを選択し、その構造に従って要件定義を生成
+          - 完成形の参考ファイルのフォーマット・粒度に合わせる
+          - Issueに記載がない項目は合理的なデフォルト値を設定
+          - 出力はマークダウンのみ、説明文は不要"
+
+          # Bedrock API呼び出し
+          PAYLOAD=$(jq -n \
+            --arg prompt "$PROMPT" \
+            '{
+              anthropic_version: "bedrock-2023-05-31",
+              max_tokens: 4096,
+              messages: [{role: "user", content: $prompt}]
+            }')
+
+          MODEL_ID="anthropic.claude-opus-4-5-20251101-v1:0"
+          RESPONSE=$(aws bedrock-runtime invoke-model \
+            --model-id "$MODEL_ID" \
+            --content-type application/json \
+            --accept application/json \
+            --body "$PAYLOAD" \
+            /dev/stdout 2>/dev/null)
+
+          # レスポンスから要件テキストを抽出
+          REQUIREMENTS=$(echo "$RESPONSE" | jq -r '.content[0].text')
+
+          # ファイルに書き出し
+          echo "$REQUIREMENTS" > "/tmp/requirements.md"
+
       - name: Create branch and PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ITEM_ID: ${{ steps.extract.outputs.item_id }}
         run: |
-          BRANCH="newItem/${{ github.event.issue.number }}/${{ steps.extract.outputs.item_id }}"
+          BRANCH="newItem/${{ github.event.issue.number }}/${ITEM_ID}"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git fetch origin "$BRANCH" && git checkout "$BRANCH" || git checkout -b "$BRANCH"
+
+          # Issueファイル
           mkdir -p .kiro/issue
           cat << 'EOF' > ".kiro/issue/${{ github.event.issue.number }}.md"
           # ${{ github.event.issue.title }}
 
           ${{ github.event.issue.body }}
           EOF
-          git add .kiro/issue/
-          git commit -m "Add issue #${{ github.event.issue.number }}" || true
+
+          # Bedrock生成の要件ファイル
+          if [ -f /tmp/requirements.md ]; then
+            cp /tmp/requirements.md ".kiro/definition/${ITEM_ID}_requirements.md"
+          fi
+
+          git add .kiro/
+          git commit -m "Add issue #${{ github.event.issue.number }} with requirements" || true
           git push origin "$BRANCH"
-          gh pr list --head "$BRANCH" --json number --jq '.[0].number' | grep -q . || gh pr create --title "${{ github.event.issue.title }}" --body "Closes #${{ github.event.issue.number }}" --head "$BRANCH"
+          gh pr list --head "$BRANCH" --json number --jq '.[0].number' | grep -q . || \
+            gh pr create \
+              --title "${{ github.event.issue.title }}" \
+              --body "Closes #${{ github.event.issue.number }}
+
+          ## 自動生成された要件
+          \`.kiro/definition/${ITEM_ID}_requirements.md\` を確認してください。" \
+              --head "$BRANCH"
