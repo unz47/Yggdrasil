@@ -82,11 +82,13 @@ jobs:
               messages: [{role: "user", content: $prompt}]
             }')
 
+          echo "$PAYLOAD" > /tmp/bedrock_payload.json
+
           RESPONSE=$(aws bedrock-runtime invoke-model \
             --model-id "us.anthropic.claude-sonnet-4-5-20250929-v1:0" \
             --content-type application/json \
             --accept application/json \
-            --body "$PAYLOAD" \
+            --body file:///tmp/bedrock_payload.json \
             /dev/stdout) || true
 
           echo "Bedrock response status: $?"
