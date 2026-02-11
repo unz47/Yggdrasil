@@ -74,28 +74,25 @@ jobs:
           - 出力はマークダウンのみ、説明文は不要"
 
           # Bedrock API呼び出し
-          PAYLOAD=$(jq -n \
-            --arg prompt "$PROMPT" \
+          printf '%s' "$PROMPT" > /tmp/prompt.txt
+          jq -n --rawfile prompt /tmp/prompt.txt \
             '{
               anthropic_version: "bedrock-2023-05-31",
               max_tokens: 4096,
               messages: [{role: "user", content: $prompt}]
-            }')
+            }' > /tmp/bedrock_payload.json
 
-          echo "$PAYLOAD" > /tmp/bedrock_payload.json
-
-          RESPONSE=$(aws bedrock-runtime invoke-model \
+          aws bedrock-runtime invoke-model \
             --model-id "us.anthropic.claude-sonnet-4-5-20250929-v1:0" \
             --content-type application/json \
             --accept application/json \
-            --body file:///tmp/bedrock_payload.json \
-            /dev/stdout) || true
+            --body fileb:///tmp/bedrock_payload.json \
+            /tmp/bedrock_response.json || true
 
           echo "Bedrock response status: $?"
-          echo "Response length: ${#RESPONSE}"
 
           # レスポンスから要件テキストを抽出
-          REQUIREMENTS=$(echo "$RESPONSE" | jq -r '.content[0].text')
+          REQUIREMENTS=$(jq -r '.content[0].text' /tmp/bedrock_response.json 2>/dev/null)
 
           # ファイルに書き出し
           echo "$REQUIREMENTS" > "/tmp/requirements.md"
