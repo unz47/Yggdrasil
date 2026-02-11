@@ -82,21 +82,22 @@ jobs:
               messages: [{role: "user", content: $prompt}]
             }')
 
+          echo "$PAYLOAD" > /tmp/bedrock_payload.json
+
           RESPONSE=$(aws bedrock-runtime invoke-model \
             --model-id "us.anthropic.claude-sonnet-4-5-20250929-v1:0" \
             --content-type application/json \
             --accept application/json \
-            --body "$PAYLOAD" \
-            /dev/stdout) || true
+            --body file:///tmp/bedrock_payload.json \
+            /tmp/bedrock_response.json) || true
 
           echo "Bedrock response status: $?"
-          echo "Response length: ${#RESPONSE}"
 
           # レスポンスから要件テキストを抽出
-          REQUIREMENTS=$(echo "$RESPONSE" | jq -r '.content[0].text')
-
-          # ファイルに書き出し
-          echo "$REQUIREMENTS" > "/tmp/requirements.md"
+          if [ -f /tmp/bedrock_response.json ]; then
+            REQUIREMENTS=$(jq -r '.content[0].text' /tmp/bedrock_response.json)
+            echo "$REQUIREMENTS" > "/tmp/requirements.md"
+          fi
 
       - name: Create branch and PR
         env:
