@@ -83,7 +83,7 @@ jobs:
             }' > /tmp/bedrock_payload.json
 
           aws bedrock-runtime invoke-model \
-            --model-id "us.anthropic.claude-sonnet-4-5-20250929-v1:0" \
+            --model-id "anthropic.claude-opus-4-6-v1" \
             --content-type application/json \
             --accept application/json \
             --body fileb:///tmp/bedrock_payload.json \
