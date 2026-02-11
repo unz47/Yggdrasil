@@ -1,120 +1,117 @@
 # ミスリルブロック追加要件
 
-## 基本情報
+## アイテム基本情報
+
+### 識別情報
 ```yaml
-ブロックID: mithril_block
-ブロック名（日本語）: ミスリルブロック
-ブロック名（英語）: Mithril Block
-説明: ミスリルの金属ブロック
+アイテムID: mithril_block
+アイテム名（日本語）: ミスリルブロック
+アイテム名（英語）: Mithril Block
+説明: 貴重なミスリルインゴットから作られた装飾ブロック
 ```
 
-## ブロックタイプ
+### アイテムタイプ
 ```yaml
-ブロックタイプ: 通常ブロック
-```
-
-## ブロック特性
-```yaml
-# 物理特性
-硬度: 5.0
-爆発耐性: 6.0
-音: metal
-
-# 採掘設定
-適切なツール: pickaxe
-必要ツールレベル: iron
-ツール必須: Yes
-
-# 光源
-発光レベル: 0
-
-# その他
-ランダムティック: No
-当たり判定: あり
-透過性: No
-可燃性: No
-```
-
-## ドロップ設定
-```yaml
-ドロップアイテム: 自分自身
-ドロップ数: 1
-シルクタッチ必須: No
-```
-
-## クリエイティブタブ
-```yaml
-タブ: Yggdrasil_建築ブロック
-```
-
-## クラフトレシピ
-```yaml
-# インゴットからブロックへ（圧縮）
-圧縮レシピ: あり
-圧縮材料: mithril_ingot x 9
-結果: mithril_block x 1
-
-# ブロックからインゴットへ（解体）
-解体レシピ: あり
-解体材料: mithril_block x 1
-結果: mithril_ingot x 9
-```
-
-## 精錬レシピ
-```yaml
-精錬レシピ: なし
-```
-
-## ブロックステート
-```yaml
-ブロックステート: なし
-```
-
-## テクスチャ
-```yaml
-テクスチャタイプ: 全面同じ
-
-テクスチャファイル:
-  全面: mithril_block.png
-
-テクスチャパス: textures/block/mithril_block.png
-テクスチャサイズ: 16x16
-```
-
-## ブロックモデル
-```yaml
-モデルタイプ: 通常キューブ
-```
-
-## 特殊機能
-```yaml
-右クリック動作: なし
-レッドストーン: なし
-特殊能力: なし
-```
-
-## ワールド生成
-```yaml
-自然生成: なし
+カテゴリ: ブロックアイテム
 ```
 
 ---
 
-## 実装指示
+## ブロック特性
 
-上記のミスリルブロックを実装してください。
+### 基本特性
+```yaml
+スタック可能: Yes
+最大スタック数: 64
+希少度: Rare
+硬度: 5.0
+爆発耐性: 6.0
+採掘ツール: ピッケル（鉄以上）
+採掘音: 金属音
+```
 
-必要なファイル:
-1. MetalBlocks.java - ブロック登録（MITHRIL_BLOCK追加）
-2. ModCreativeTabs.java - 建築ブロックタブに追加
-3. assets/yggdrasil/blockstates/mithril_block.json
-4. assets/yggdrasil/models/block/mithril_block.json
-5. assets/yggdrasil/models/item/mithril_block.json
-6. assets/yggdrasil/textures/block/mithril_block.png
-7. assets/yggdrasil/lang/ja_jp.json, en_us.json（翻訳追加）
-8. data/yggdrasil/loot_tables/blocks/mithril_block.json
-9. data/yggdrasil/recipes/metal/mithril_block_from_ingots.json
-10. data/yggdrasil/recipes/metal/mithril_ingot_from_block.json
+---
 
-前提: mithril_ingotが既に実装済み
-プロジェクト: yggdrasil (Minecraft 1.20.6, Forge 50.2.1)
+## クリエイティブタブ
+```yaml
+タブ: Yggdrasil
+```
+
+---
+
+## クラフトレシピ
+
+### レシピ有無
+```yaml
+クラフトレシピ: あり
+レシピタイプ: 作業台（有形）
+```
+
+### レシピパターン
+```yaml
+パターン:
+  行1: [mithril_ingot, mithril_ingot, mithril_ingot]
+  行2: [mithril_ingot, mithril_ingot, mithril_ingot]
+  行3: [mithril_ingot, mithril_ingot, mithril_ingot]
+
+# 簡易表記:
+# MMM
+# MMM
+# MMM
+# M=mithril_ingot
+```
+
+### 逆クラフト（ブロック→インゴット）
+```yaml
+レシピタイプ: 作業台（無形）
+材料: mithril_block x 1
+結果: mithril_ingot x 9
+```
+
+---
+
+## テクスチャ情報
+```yaml
+テクスチャファイル名: mithril_block.png
+テクスチャサイズ: 16x16
+テクスチャの場所: 新規作成
+色: 銀青色の金属光沢
+```
+
+---
+
+## 特殊機能
+
+### 右クリック動作
+```yaml
+右クリック動作: なし
+```
+
+### 特殊能力
+```yaml
+特殊能力: なし
+発光: No
+耐火性: Yes
+```
+
+---
+
+## 入手方法
+```yaml
+入手方法:
+  - クラフト: Yes（ミスリルインゴット9個）
+  - モブドロップ: なし
+  - ブロック破壊: Yes（自身をドロップ）
+  - チェスト戦利品: なし
+  - 村人取引: なし
+```
+
+---
+
+## 実装メモ
+```
+- ミスリルインゴットが既に実装されていることを前提とする
+- 金属ブロックとして標準的な特性を持つ
+- ビーコンの土台として使用可能にする
+- 鉄以上のピッケルで採掘可能
+```
