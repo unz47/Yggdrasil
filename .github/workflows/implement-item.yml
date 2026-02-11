@@ -1,0 +1,218 @@
+name: Implement Item from Requirements
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  implement:
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'newItem/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION || 'us-east-1' }}
+
+      - name: Extract item ID from branch name
+        id: extract
+        run: |
+          # newItem/24/mithril_block -> mithril_block
+          BRANCH="${{ github.event.pull_request.head.ref }}"
+          ITEM_ID=$(echo "$BRANCH" | sed 's|newItem/[0-9]*/||')
+          echo "item_id=$ITEM_ID" >> $GITHUB_OUTPUT
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          echo "Extracted ITEM_ID: $ITEM_ID"
+
+      - name: Check requirements file exists
+        id: check
+        run: |
+          REQ_FILE=".kiro/definition/${{ steps.extract.outputs.item_id }}_requirements.md"
+          if [ ! -f "$REQ_FILE" ]; then
+            echo "Requirements file not found: $REQ_FILE"
+            echo "exists=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          echo "exists=true" >> $GITHUB_OUTPUT
+
+      - name: Generate implementation with Bedrock
+        if: steps.check.outputs.exists == 'true'
+        env:
+          ITEM_ID: ${{ steps.extract.outputs.item_id }}
+        run: |
+          REQ_FILE=".kiro/definition/${ITEM_ID}_requirements.md"
+          REQUIREMENTS=$(cat "$REQ_FILE")
+
+          # 既存の実装コードをサンプルとして収集
+          EXISTING_CODE=""
+          for f in \
+            src/main/java/com/example/examplemod/block/ModBlocks.java \
+            src/main/java/com/example/examplemod/item/metal/MetalItems.java \
+            src/main/java/com/example/examplemod/item/ModCreativeTabs.java \
+            src/main/java/com/example/examplemod/item/ModItems.java \
+            src/main/java/com/example/examplemod/Yggdrasil.java \
+            src/main/resources/assets/yggdrasil/lang/ja_jp.json \
+            src/main/resources/assets/yggdrasil/lang/en_us.json; do
+            if [ -f "$f" ]; then
+              EXISTING_CODE="${EXISTING_CODE}
+          --- $f ---
+          $(cat "$f")
+          "
+            fi
+          done
+
+          # 既存のリソースファイルをサンプルとして1つずつ収集
+          SAMPLE_RESOURCES=""
+          for dir in \
+            src/main/resources/assets/yggdrasil/blockstates \
+            src/main/resources/assets/yggdrasil/models/block \
+            src/main/resources/assets/yggdrasil/models/item \
+            src/main/resources/data/yggdrasil/loot_tables/blocks \
+            src/main/resources/data/yggdrasil/recipes/metal \
+            src/main/resources/data/minecraft/tags/blocks; do
+            for f in "$dir"/*.json; do
+              if [ -f "$f" ]; then
+                SAMPLE_RESOURCES="${SAMPLE_RESOURCES}
+          --- $f ---
+          $(cat "$f")
+          "
+                break
+              fi
+            done
+          done
+
+          # プロンプト構築
+          cat > /tmp/prompt.txt << 'PROMPT_END'
+          あなたはMinecraft Forge 1.20.6 モッド「Yggdrasil」の実装コードを生成するアシスタントです。
+
+          以下の要件定義に基づいて、必要な全ファイルの実装コードを生成してください。
+
+          ## 要件定義:
+          PROMPT_END
+          echo "$REQUIREMENTS" >> /tmp/prompt.txt
+
+          cat >> /tmp/prompt.txt << 'PROMPT_END'
+
+          ## 既存のJavaコード（参考・追記先）:
+          PROMPT_END
+          echo "$EXISTING_CODE" >> /tmp/prompt.txt
+
+          cat >> /tmp/prompt.txt << 'PROMPT_END'
+
+          ## 既存のリソースファイル例（フォーマット参考）:
+          PROMPT_END
+          echo "$SAMPLE_RESOURCES" >> /tmp/prompt.txt
+
+          cat >> /tmp/prompt.txt << 'PROMPT_END'
+
+          ## 出力形式:
+          各ファイルを以下の形式で出力してください。新規ファイルも既存ファイルへの追記も全て含めてください。
+          既存ファイルの場合はファイル全体の内容を出力してください（差分ではなく）。
+
+          ```file:相対パス
+          ファイル内容
+          ```
+
+          例:
+          ```file:src/main/java/com/example/examplemod/block/ModBlocks.java
+          package com.example.examplemod.block;
+          // ... 全内容
+          ```
+
+          ## 注意事項:
+          - 既存のコードとの整合性を保つこと
+          - テクスチャ画像(.png)は生成不要。ただしパスはモデルJSONで正しく参照すること
+          - テクスチャ画像のパスは以下の規則に従うこと:
+            - ブロック: textures/block/{item_id}.png
+            - アイテム: textures/item/metal/{item_id}.png
+          - lang JSONは既存エントリを保持した上で新規エントリを追加すること
+          - 説明文やコメントは不要。コードのみ出力すること
+          PROMPT_END
+
+          # Bedrock API呼び出し
+          jq -n --rawfile prompt /tmp/prompt.txt \
+            '{
+              anthropic_version: "bedrock-2023-05-31",
+              max_tokens: 8192,
+              messages: [{role: "user", content: $prompt}]
+            }' > /tmp/bedrock_payload.json
+
+          aws bedrock-runtime invoke-model \
+            --model-id "us.anthropic.claude-sonnet-4-5-20250929-v1:0" \
+            --content-type application/json \
+            --accept application/json \
+            --body fileb:///tmp/bedrock_payload.json \
+            /tmp/bedrock_response.json || true
+
+          echo "Bedrock response status: $?"
+
+          # レスポンスからテキスト抽出
+          RESPONSE_TEXT=$(jq -r '.content[0].text' /tmp/bedrock_response.json 2>/dev/null)
+          echo "$RESPONSE_TEXT" > /tmp/implementation.md
+
+          # ```file:パス ... ``` ブロックを解析してファイルを生成
+          python3 << 'PYTHON_END'
+          import re, os
+
+          with open("/tmp/implementation.md", "r") as f:
+              content = f.read()
+
+          pattern = r'```file:(.+?)\n(.*?)```'
+          matches = re.findall(pattern, content, re.DOTALL)
+
+          for filepath, filecontent in matches:
+              filepath = filepath.strip()
+              os.makedirs(os.path.dirname(filepath), exist_ok=True)
+              with open(filepath, "w") as f:
+                  f.write(filecontent)
+              print(f"Generated: {filepath}")
+
+          if not matches:
+              print("WARNING: No file blocks found in response")
+              print("Response preview:")
+              print(content[:500])
+          PYTHON_END
+
+      - name: Create implementation PR
+        if: steps.check.outputs.exists == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ITEM_ID: ${{ steps.extract.outputs.item_id }}
+        run: |
+          BRANCH="implement/${ITEM_ID}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin "$BRANCH" && git checkout "$BRANCH" || git checkout -b "$BRANCH"
+
+          git add -A
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+
+          git commit -m "feat: ${ITEM_ID} の実装コードを自動生成"
+          git push origin "$BRANCH"
+
+          # 元のIssue番号をブランチ名から取得
+          ISSUE_NUM=$(echo "${{ github.event.pull_request.head.ref }}" | grep -oP 'newItem/\K[0-9]+')
+
+          gh pr create \
+            --title "実装: ${ITEM_ID}" \
+            --body "## 自動生成された実装コード
+
+          要件定義 \`.kiro/definition/${ITEM_ID}_requirements.md\` に基づいて自動生成されました。
+
+          関連Issue: #${ISSUE_NUM}
+
+          ### 確認事項
+          - [ ] Javaコードのコンパイルが通ること
+          - [ ] リソースファイル（JSON）の形式が正しいこと
+          - [ ] テクスチャ画像を手動で追加すること
+            - ブロックの場合: \`src/main/resources/assets/yggdrasil/textures/block/${ITEM_ID}.png\`
+            - アイテムの場合: \`src/main/resources/assets/yggdrasil/textures/item/metal/${ITEM_ID}.png\`" \
+            --head "$BRANCH"
