@@ -82,9 +82,8 @@ jobs:
               messages: [{role: "user", content: $prompt}]
             }')
 
-          MODEL_ID="anthropic.claude-opus-4-5-20251101-v1:0"
           RESPONSE=$(aws bedrock-runtime invoke-model \
-            --model-id "$MODEL_ID" \
+            --model-id "us.anthropic.claude-sonnet-4-5-20250929-v1:0" \
             --content-type application/json \
             --accept application/json \
             --body "$PAYLOAD" \
