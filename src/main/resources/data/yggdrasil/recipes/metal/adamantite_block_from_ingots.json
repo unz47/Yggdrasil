@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "III",
+    "III",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "yggdrasil:adamantite_ingot"
+    }
+  },
+  "result": {
+    "id": "yggdrasil:adamantite_block",
+    "count": 1
+  }
+}

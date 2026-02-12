@@ -37,6 +37,7 @@ public class ModCreativeTabs {
             .displayItems((parameters, output) -> {
                 output.accept(ModBlocks.MITHRIL_ORE.get());
                 output.accept(ModBlocks.ADAMANTITE_ORE.get());
+                output.accept(ModBlocks.ADAMANTITE_BLOCK.get());
             })
             .build());
 

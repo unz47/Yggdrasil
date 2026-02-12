@@ -30,16 +30,23 @@ public class ModBlocks {
             .sound(SoundType.STONE)
             .lightLevel(state -> 9)));
 
+    public static final RegistryObject<Block> ADAMANTITE_BLOCK = BLOCKS.register("adamantite_block",
+        () -> new Block(BlockBehaviour.Properties.of()
+            .strength(5.0f, 6.0f)
+            .requiresCorrectToolForDrops()
+            .sound(SoundType.METAL)));
+
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
     }
 
     public static void registerBlockItems(IEventBus eventBus) {
         DeferredRegister<Item> items = DeferredRegister.create(ForgeRegistries.ITEMS, Yggdrasil.MODID);
-        
+
         items.register("mithril_ore", () -> new BlockItem(MITHRIL_ORE.get(), new Item.Properties()));
         items.register("adamantite_ore", () -> new BlockItem(ADAMANTITE_ORE.get(), new Item.Properties()));
-        
+        items.register("adamantite_block", () -> new BlockItem(ADAMANTITE_BLOCK.get(), new Item.Properties()));
+
         items.register(eventBus);
     }
 }
