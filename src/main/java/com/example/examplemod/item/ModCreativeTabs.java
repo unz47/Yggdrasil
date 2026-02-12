@@ -3,6 +3,7 @@ package com.example.examplemod.item;
 import com.example.examplemod.Yggdrasil;
 import com.example.examplemod.block.ModBlocks;
 import com.example.examplemod.entity.ModSpawnEggs;
+import com.example.examplemod.item.food.FoodItems;
 import com.example.examplemod.item.metal.MetalItems;
 import com.example.examplemod.item.tool.ToolItems;
 import net.minecraft.core.registries.Registries;
@@ -64,10 +65,10 @@ public class ModCreativeTabs {
 
     public static final RegistryObject<CreativeModeTab> FOOD_TAB = CREATIVE_MODE_TABS.register("food_tab",
         () -> CreativeModeTab.builder()
-            .icon(() -> new ItemStack(Items.APPLE))
+            .icon(() -> new ItemStack(FoodItems.TOMATO.get()))
             .title(Component.translatable("creativetab.yggdrasil.food"))
             .displayItems((parameters, output) -> {
-                output.accept(Items.APPLE);
+                output.accept(FoodItems.TOMATO.get());
             })
             .build());
 
