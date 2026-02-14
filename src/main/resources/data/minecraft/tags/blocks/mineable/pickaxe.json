@@ -3,6 +3,7 @@
   "values": [
     "yggdrasil:mithril_ore",
     "yggdrasil:adamantite_ore",
+    "yggdrasil:mithril_block",
     "yggdrasil:adamantite_block"
   ]
 }

@@ -30,6 +30,12 @@ public class ModBlocks {
             .sound(SoundType.STONE)
             .lightLevel(state -> 9)));
 
+    public static final RegistryObject<Block> MITHRIL_BLOCK = BLOCKS.register("mithril_block",
+        () -> new Block(BlockBehaviour.Properties.of()
+            .strength(5.0f, 6.0f)
+            .requiresCorrectToolForDrops()
+            .sound(SoundType.METAL)));
+
     public static final RegistryObject<Block> ADAMANTITE_BLOCK = BLOCKS.register("adamantite_block",
         () -> new Block(BlockBehaviour.Properties.of()
             .strength(5.0f, 6.0f)
@@ -45,6 +51,7 @@ public class ModBlocks {
 
         items.register("mithril_ore", () -> new BlockItem(MITHRIL_ORE.get(), new Item.Properties()));
         items.register("adamantite_ore", () -> new BlockItem(ADAMANTITE_ORE.get(), new Item.Properties()));
+        items.register("mithril_block", () -> new BlockItem(MITHRIL_BLOCK.get(), new Item.Properties()));
         items.register("adamantite_block", () -> new BlockItem(ADAMANTITE_BLOCK.get(), new Item.Properties()));
 
         items.register(eventBus);

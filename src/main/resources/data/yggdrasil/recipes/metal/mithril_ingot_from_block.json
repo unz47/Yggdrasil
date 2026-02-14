@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "yggdrasil:mithril_block"
+    }
+  ],
+  "result": {
+    "id": "yggdrasil:mithril_ingot",
+    "count": 9
+  }
+}

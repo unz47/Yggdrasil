@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "yggdrasil:mithril_block",
     "yggdrasil:adamantite_block"
   ]
 }
