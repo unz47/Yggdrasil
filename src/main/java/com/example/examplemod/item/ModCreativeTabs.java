@@ -38,6 +38,7 @@ public class ModCreativeTabs {
                 output.accept(ModBlocks.MITHRIL_ORE.get());
                 output.accept(ModBlocks.ADAMANTITE_ORE.get());
                 output.accept(ModBlocks.MITHRIL_BLOCK.get());
+                output.accept(ModBlocks.ADAMANTITE_BLOCK.get());
             })
             .build());
 
