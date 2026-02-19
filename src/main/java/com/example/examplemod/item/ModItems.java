@@ -1,6 +1,7 @@
 package com.example.examplemod.item;
 
 import com.example.examplemod.block.ModBlocks;
+import com.example.examplemod.item.armor.ArmorItems;
 import com.example.examplemod.item.food.FoodItems;
 import com.example.examplemod.item.metal.MetalItems;
 import com.example.examplemod.item.tool.ToolItems;
@@ -11,6 +12,7 @@ public class ModItems {
         MetalItems.register(eventBus);
         ToolItems.register(eventBus);
         FoodItems.register(eventBus);
+        ArmorItems.register(eventBus);
         ModBlocks.registerBlockItems(eventBus);
     }
 }
