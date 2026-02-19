@@ -3,6 +3,7 @@ package com.example.examplemod.item;
 import com.example.examplemod.Yggdrasil;
 import com.example.examplemod.block.ModBlocks;
 import com.example.examplemod.entity.ModSpawnEggs;
+import com.example.examplemod.item.armor.ArmorItems;
 import com.example.examplemod.item.food.FoodItems;
 import com.example.examplemod.item.metal.MetalItems;
 import com.example.examplemod.item.tool.ToolItems;
@@ -62,6 +63,8 @@ public class ModCreativeTabs {
                 output.accept(ToolItems.ULTIMATE_SWORD.get());
                 output.accept(ToolItems.ULTIMATE_AXE.get());
                 output.accept(ToolItems.ULTIMATE_BOW.get());
+                output.accept(ArmorItems.ULTIMATE_HELMET.get());
+                output.accept(ArmorItems.ULTIMATE_CHESTPLATE.get());
             })
             .build());
 
