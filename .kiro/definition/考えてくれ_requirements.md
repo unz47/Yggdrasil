@@ -5,7 +5,7 @@
 アイテムID: ultimate_chestplate
 アイテム名（日本語）: アルティメットチェストプレート
 アイテム名（英語）: Ultimate Chestplate
-説明: アルティメットインゴットで作られた最強クラスの胴装備
+説明: アダマンタイトとミスリルを組み合わせた究極のチェストプレート
 ```
 
 ## 防具タイプ
@@ -15,11 +15,11 @@
 
 ## 防具特性
 ```yaml
-# 素材ティア設定（アルティメット防具 頭装備と同一ティアを共有）
-防御力: 8  # チェストプレート枠（ネザライト=8）
-タフネス: 4.0  # ネザライト(3.0)を超える最上位
-ノックバック耐性: 0.15  # ネザライト(0.1)を超える
-耐久値: 592  # チェストプレート基準（ネザライト=592相当、それ以上を想定）
+# 素材ティア設定（ネザライトの2倍）
+防御力: 16
+タフネス: 6.0
+ノックバック耐性: 0.2
+耐久値: 1184
 
 # 参考値（バニラ チェストプレート）
 # 革: 防御3, 耐久80
@@ -27,10 +27,19 @@
 # ダイヤ: 防御8, タフネス2.0, 耐久528
 # ネザライト: 防御8, タフネス3.0, ノックバック0.1, 耐久592
 
-エンチャント適性: 20  # ネザライト(15)を超える高適性
+エンチャント適性: 15
 ```
 
-## 防具セット効果（任意）
+## 初期エンチャント
+```yaml
+# クラフト時に最初から付与されるエンチャント
+初期エンチャント:
+  - 防護IV (Protection IV)
+  - 耐久力III (Unbreaking III)
+  - 棘の鎧III (Thorns III)
+```
+
+## 防具セット効果
 ```yaml
 セット効果: なし
 ```
@@ -46,9 +55,9 @@
 レシピタイプ: 作業台（有形）
 
 パターン:
-  行1: [ultimate_ingot, air, ultimate_ingot]
-  行2: [ultimate_ingot, ultimate_ingot, ultimate_ingot]
-  行3: [ultimate_ingot, ultimate_ingot, ultimate_ingot]
+  行1: [adamantite_ingot, air, adamantite_ingot]
+  行2: [adamantite_ingot, mithril_ingot, adamantite_ingot]
+  行3: [adamantite_ingot, mithril_ingot, adamantite_ingot]
 
 結果: ultimate_chestplate x 1
 ```
@@ -56,7 +65,7 @@
 ## 修繕
 ```yaml
 修繕可能: Yes
-修繕材料: ultimate_ingot
+修繕材料: adamantite_ingot
 ```
 
 ## テクスチャ
@@ -102,5 +111,5 @@
 8. assets/yggdrasil/lang/ja_jp.json, en_us.json（翻訳追加）
 9. data/yggdrasil/recipes/armor/ultimate_chestplate.json
 
-前提: ultimate_ingot および ultimate_helmet（アルティメット防具 頭装備）が既に実装済み。防具マテリアル（UltimateArmorMaterial）は頭装備実装時に作成済みのものを共有する。
+前提: adamantite_ingot および mithril_ingot が既に実装済み。防具マテリアル（UltimateArmorMaterial）は頭装備実装時に作成済みのものを共有する。
 プロジェクト: yggdrasil (Minecraft 1.20.6, Forge 50.2.1)
